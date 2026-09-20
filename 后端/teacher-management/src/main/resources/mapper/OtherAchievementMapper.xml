@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tit.university.mapper.OtherAchievementMapper">
+
+
+
+
+
+
+    <select id="list" resultType="com.tit.university.pojo.OtherAchievement">
+        select oa.id, oa.user_id userId, oa.title, oa.description, oa.status, oa.evidence_path evidencePath, oa.evidence_name evidenceName, oa.evidence_size evidenceSize, oa.audit_user_id auditUserId,
+        oa.audit_time auditTime, oa.audit_remark auditRemark, oa.create_time createTime, oa.update_time updateTime, oa.delete_flag deleteFlag,
+        u.real_name userName, u.employee_id employeeId, u.phone phone, u.department department, u.email email
+        from other_achievement oa left join users u on oa.user_id = u.id where oa.delete_flag = 0
+        <if test="userId != null"> and oa.user_id = #{userId} </if>
+        <if test="status != null and status != '' "> and oa.status = #{status} </if>
+        order by oa.create_time desc
+    </select>
+
+<!--    -->
+    <select id="countByUserId" resultType="java.lang.Long">
+
+        select count(*) from other_achievement where delete_flag = 0
+        <if test="userId != null"> and user_id = #{userId} </if>
+        <if test="status != null and status != '' "> and status = #{status} </if>
+    </select>
+
+
+</mapper>

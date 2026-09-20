@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tit.university.mapper.EssayMapper">
+    <insert id="insert">
+        insert into essay (user_id, title, level, author_type, status, publish_time, journal_name,
+        certificate_path, certificate_name, certificate_size)
+        values (#{userId}, #{title}, #{level}, #{authorType}, #{status}, #{publishTime}, #{journalName}, #{certificatePath}, #{certificateName}, #{certificateSize})
+    </insert>
+
+
+    <select id="list" resultType="com.tit.university.pojo.Essay">
+        select e.id, e.user_id userId, e.title, e.level, e.author_type authorType, e.status,
+        e.publish_time publishTime, e.journal_name journalName, e.certificate_path certificatePath,
+        e.certificate_name certificateName, e.certificate_size certificateSize, e.audit_user_id auditUserId,
+        e.audit_time auditTime, e.audit_remark auditRemark, e.create_time createTime,
+        e.update_time updateTime, e.delete_flag deleteFlag,
+        u.real_name userName, u.employee_id employeeId, u.phone phone, u.department department, u.email email from essay e
+        left join users u on e.user_id = u.id where e.delete_flag = 0
+        <if test="userId != null"> AND e.user_id = #{userId} </if>
+        <if test="status != null and status != '' "> AND e.status = #{status} </if>
+        order by e.create_time desc
+    </select>
+
+
+    <select id="countByUserId" resultType="java.lang.Long">
+        select count(*) from essay where delete_flag = 0
+        <if test="userId != null"> and user_id = #{userId} </if>
+        <if test="status != null and status != '' "> and status = #{status} </if>
+    </select>
+
+
+</mapper>

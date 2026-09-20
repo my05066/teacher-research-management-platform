@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tit.university.mapper.StudentAwardMapper">
+
+
+    <select id="list" resultType="com.tit.university.pojo.StudentAward">
+        select sa.id, sa.user_id userId, sa.student_name studentName, sa.award_name awardName, sa.award_type awardType, sa.award_time awardTime, sa.status, sa.audit_user_id auditUserId,
+        sa.audit_time auditTime, sa.audit_remark auditRemark, sa.create_time createTime, sa.update_time updateTime, sa.delete_flag deleteFlag,
+        u.real_name userName, u.employee_id employeeId, u.phone phone, u.department department, u.email email
+        from student_award sa left join users u on sa.user_id = u.id where sa.delete_flag = 0
+        <if test="userId != null"> and sa.user_id = #{userId} </if>
+        <if test="status != null and status != '' "> and sa.status = #{status} </if>
+        order by sa.create_time desc
+    </select>
+
+
+
+
+
+    <select id="countByUserId" resultType="java.lang.Long">
+        select count(*) from student_award where delete_flag = 0
+        <if test="userId != null"> and user_id = #{userId} </if>
+        <if test="status != null and status != '' "> and status = #{status} </if>
+    </select>
+
+
+
+
+
+</mapper>

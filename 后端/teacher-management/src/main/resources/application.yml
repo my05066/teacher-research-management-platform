@@ -1,0 +1,71 @@
+spring:
+  application:
+    name: teacher-management
+  # 配置数据库连接信息
+  datasource:
+    url: jdbc:mysql://localhost:3306/teacher_management_schema
+    #    url: jdbc:mysql://127.0.0.1:3306/teacher_management_schema
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username:
+    password:
+
+  servlet:
+    multipart:
+      # 最大单个文件大小
+      max-file-size: 10MB
+      # 最大请求大小（包括所有文件和表单数据）
+      max-request-size: 100MB
+
+
+
+# 文件上传配置
+file:
+  upload:
+    path: ./uploads
+
+# DeepSeek API 配置（用于快速录入的文字分类）
+deepseek:
+  api-key:
+
+# 配置Mybatis的日志输出
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 开启大驼峰命名法
+    map-underscore-to-camel-case: true
+  # 指定XML映射配置文件的位置
+  # 不用，删掉了
+  #mapper配置文件
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.tit.university.pojo
+
+#配置事务管理日志级别
+logging:
+  level:
+    org.springframework.jdbc.support.JdbcTransactionManager: debug
+
+## 阿里云OSS
+#aliyun:
+#  oss:
+#    endpoint: https://oss-cn-beijing.aliyuncs.com
+#    bucketName: java-ai-shilei
+#    region: cn-beijing
+
+tmp:
+  jwt:
+    # 设置jwt签名加密时使用的秘钥
+    secret-key: jX9#kL2$vN7@qW4!pR8&sT5*yU6^aZ3%Bn1(Mc0)Qx2+Ew4~Io7
+    # 设置jwt过期时间
+    ttl: 7200000
+    # 设置前端传递过来的令牌名称
+    token-name: token
+
+  alioss:
+    endpoint:
+    access-key-id: 
+    access-key-secret:
+    bucket-name:
+
+  baiduocr:
+    api-key:
+    secret-key:

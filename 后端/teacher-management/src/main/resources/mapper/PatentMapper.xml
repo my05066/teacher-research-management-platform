@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tit.university.mapper.PatentMapper">
+
+
+    <select id="list" resultType="com.tit.university.pojo.Patent">
+
+        select p.id, p.user_id userId, p.name, p.type, p.approval_time approvalTime, p.status,
+        p.patent_number patentNumber, p.certificate_path certificatePath, p.certificate_name certificateName,
+        p.certificate_size certificateSize, p.audit_user_id auditUserId, p.audit_time auditTime,
+        p.audit_remark auditRemark, p.create_time createTime, p.update_time updateTime,
+        p.delete_flag deleteFlag,
+        u.real_name userName, u.employee_id employeeId, u.phone phone, u.department department, u.email email from patent p
+        left join users u on p.user_id = u.id where p.delete_flag = 0
+        <if test="userId != null"> and p.user_id = #{userId} </if>
+        <if test="status != null and status != '' "> and p.status = #{status} </if>
+        order by p.create_time desc
+    </select>
+
+
+
+
+    <select id="countByUserId" resultType="java.lang.Long">
+        select count(*) from patent where delete_flag = 0
+        <if test="userId != null"> and user_id = #{userId} </if>
+        <if test="status != null and status != '' "> and status = #{status} </if>
+    </select>
+</mapper>

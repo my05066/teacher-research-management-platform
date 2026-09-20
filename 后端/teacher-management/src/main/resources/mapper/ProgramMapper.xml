@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tit.university.mapper.ProgramMapper">
+
+<!--    添加项目-->
+    <insert id="insert">
+        insert into research_project (user_id, project_type, title, level, start_time, has_company, company_name, sign_time, execution_period, expected_end_time, completion_doc_path, completion_doc_name, completion_doc_size, status, is_completed)
+            values (#{userId}, #{type}, #{title}, #{level}, #{startTime}, #{hasCompany},
+            #{companyName}, #{signTime}, #{executionPeriod}, #{expectedEndTime}, #{completionDocPath},
+            #{completionDocName}, #{completionDocSize}, #{status}, #{isCompleted})
+    </insert>
+
+
+
+
+
+    <!--    分页查询-->
+    <select id="list" resultType="com.tit.university.pojo.Program">
+        select rp.id, rp.user_id userId, rp.project_type type, rp.title, rp.status, rp.is_completed isCompleted,
+        rp.level, rp.start_time startTime, rp.has_company hasCompany, rp.company_name companyName,
+        rp.sign_time signTime, rp.execution_period executionPeriod, rp.expected_end_time expectedEndTime,
+        rp.completion_doc_path completionDocPath, rp.completion_doc_name completionDocName,
+        rp.completion_doc_size completionDocSize, rp.audit_user_id auditUserId, rp.audit_time auditTime,
+        rp.audit_remark auditRemark, rp.create_time createTime, rp.update_time updateTime, rp.delete_flag deleteFlag,
+        u.real_name userName, u.employee_id employeeId, u.phone phone, u.department department, u.email email
+        from research_project rp
+        left join users u on rp.user_id = u.id
+        where rp.delete_flag = 0
+        <if test="userId != null"> and rp.user_id = #{userId} </if>
+        <if test="status != null and status != '' "> and rp.status = #{status} </if>
+        order by rp.create_time desc
+    </select>
+
+
+    <select id="selectById" resultType="com.tit.university.pojo.Program">
+        select id, user_id userId, project_type type, title, status, is_completed isCompleted,
+            level, start_time startTime, has_company hasCompany, company_name companyName,
+            sign_time signTime, execution_period executionPeriod, expected_end_time expectedEndTime,
+            completion_doc_path completionDocPath, completion_doc_name completionDocName,
+            completion_doc_size completionDocSize, audit_user_id auditUserId, audit_time auditTime,
+            audit_remark auditRemark, create_time createTime, update_time updateTime, delete_flag deleteFlag
+            from research_project where id = #{id} and delete_flag = 0
+    </select>
+
+
+    <select id="countOngoingProjects" resultType="java.lang.Long">
+        select COUNT(*) from research_project where delete_flag = 0
+        and project_type = '横向' and is_completed = 0
+        <if test='userId != null'> and user_id = #{userId} </if>
+    </select>
+
+    <select id="countByUserId" resultType="java.lang.Long">
+        select COUNT(*) from research_project where delete_flag = 0
+        <if test="userId != null"> and user_id = #{userId} </if>
+        <if test="status != null and status != '' "> and status = #{status} </if>
+    </select>
+
+
+</mapper>

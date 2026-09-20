@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tit.university.mapper.AiAssistantChatMapper">
+
+
+    <insert id="batchInsert">
+        insert into ai_assistant_chat (user_id, role, content) values
+        <foreach collection='chats' item='chat' separator=','>
+            (#{chat.userId}, #{chat.role}, #{chat.content})
+        </foreach>
+    </insert>
+
+
+</mapper>
